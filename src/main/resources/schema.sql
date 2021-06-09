@@ -4,14 +4,14 @@ CREATE TABLE payments
     paymentType  VARCHAR(10),
     amount       NUMBER,
     debtorIban   VARCHAR(100), -- IRL would create index for this
-    creditorIban VARCHAR(100),
+    creditorIban VARCHAR(100), -- IRL would create index for this
     currency     VARCHAR(10),
     bic          VARCHAR(100),
     details      VARCHAR(255),
     cancelled    BOOLEAN default false,
-    created_by   VARCHAR(100),
+    created_by   VARCHAR(100),  -- IRL would actually fill this :)
     created_at   TIMESTAMP,
-    updated_by   VARCHAR(100),
+    updated_by   VARCHAR(100), -- this too
     updated_at   TIMESTAMP
 );
 
