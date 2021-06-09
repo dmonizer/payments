@@ -29,7 +29,7 @@ public class PaymentDto { // IRL would use MapStruct
     this.creditorIban = paymentEntity.creditorIban().getIban();
     this.currency = paymentEntity.currency();
     this.details = paymentEntity.details();
-    this.bic = paymentEntity.BIC();
+    this.bic = paymentEntity.bic();
     this.cancelled = paymentEntity.cancelled();
 
   }
@@ -41,7 +41,7 @@ public class PaymentDto { // IRL would use MapStruct
       .debtorIban(new IBAN(debtorIban))
       .creditorIban(new IBAN(creditorIban))
       .details(details)
-      .BIC(bic)
+      .bic(bic)
       .cancelled(this.cancelled);
 
     entity.id(id);

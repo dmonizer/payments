@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.concurrent.*;
 
 @RestController
-public class PaymentController { // IRL I would document endpoints and parameters with swagger.
+public class PaymentController { // IRL I would document endpoints and parameters with swagger accessible only when running on dev profile.
   private final PaymentService service;
 
   @Autowired
@@ -30,7 +30,6 @@ public class PaymentController { // IRL I would document endpoints and parameter
   public FeeDto cancelPayment(@PathVariable Long id) throws PaymentCancellationError, PaymentNotFoundException {
     return service.cancelPayment(id);
   }
-
 
   @GetMapping(path = "/bydebtor/{iban}")
   public List<PaymentDto> getPaymentsByDebtor(@PathVariable(name = "iban") IBAN debtorIban) throws PaymentNotFoundException {
@@ -51,7 +50,7 @@ public class PaymentController { // IRL I would document endpoints and parameter
   public String mockCountry() throws ExecutionException, InterruptedException {
     ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
-    return executorService.schedule(this::getCountry, 5, TimeUnit.SECONDS).get();
+    return executorService.schedule(this::getCountry, 5, TimeUnit.SECONDS).get(); // return response in 5 seconds to emulate slow external API
   }
 
   private String getCountry() {

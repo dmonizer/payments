@@ -18,7 +18,7 @@ class PaymentValidatorTest {
     Assertions.assertTrue(
       new PaymentValidator(makePayment("USD",1,PaymentType.TYPE_2)).isValid());
     Assertions.assertTrue(
-      new PaymentValidator(makePayment("EUR",1,PaymentType.TYPE_3).BIC("TESTBICASTHISISNOTVERIFIED")).isValid());
+      new PaymentValidator(makePayment("EUR",1,PaymentType.TYPE_3).bic("TESTBICASTHISISNOTVERIFIED")).isValid());
 
   }
 
@@ -31,7 +31,7 @@ class PaymentValidatorTest {
       new PaymentValidator(makePayment("USD",-10,PaymentType.TYPE_2)).isValid());
 
     Assertions.assertFalse(
-      new PaymentValidator(makePayment("EUR",1,PaymentType.TYPE_3).BIC(null)).isValid());
+      new PaymentValidator(makePayment("EUR",1,PaymentType.TYPE_3).bic(null)).isValid());
 
   }
 

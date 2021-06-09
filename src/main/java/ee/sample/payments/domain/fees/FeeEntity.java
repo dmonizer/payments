@@ -23,6 +23,7 @@ public class FeeEntity extends BaseEntity {
   @Column
   Currency currency;
 
+  // IRL I would not tie the fee directly to a single payment, rather to something more generic
   @ManyToOne(fetch = FetchType.LAZY, targetEntity = PaymentEntity.class, optional = false)
   PaymentEntity payment;
 

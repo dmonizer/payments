@@ -42,7 +42,7 @@ public class PaymentEntity extends Auditable {
   private String details;
 
   @Column(name = "BIC")
-  private String BIC;
+  private String bic;
 
   @Column
   private boolean cancelled;

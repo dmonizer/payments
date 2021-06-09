@@ -34,7 +34,7 @@ public class PaymentsServiceImpl implements PaymentService {
     logTrace("makePayment: payment=%s", paymentDto);
     var payment = new Payment(paymentDto.toEntity());
     if (!new PaymentValidator(payment.getPaymentEntity()).isValid()) {
-      throw new PaymentInvalidError("Payment invalid");
+      throw new PaymentInvalidError("Payment invalid"); // here I am relying on DB rollback to not save the payment if invalid. IRL would not rely only on that.
     }
     paymentRepository.save(payment.getPaymentEntity());
     return new PaymentDto(payment.getPaymentEntity());
@@ -66,7 +66,6 @@ public class PaymentsServiceImpl implements PaymentService {
       .stream()
       .map(PaymentDto::new)
       .collect(Collectors.toList());
-
   }
 
   @Override
