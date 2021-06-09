@@ -9,7 +9,7 @@ public interface CancellablePayment {
   public FeeEntity calculateCancellationFee() throws PaymentCancellationError;
 
   default boolean isCancellationPossible(LocalDateTime paymentCreationTIme) {
-    LocalDateTime todayMidnight = LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT);
+    var todayMidnight = LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT);
     return !paymentCreationTIme.isBefore(todayMidnight);
   }
 }

@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,12 +29,7 @@ public class PaymentsServiceImpl implements PaymentService {
 
   @Override
   public PaymentDto makePayment(PaymentDto paymentDto) throws PaymentInvalidError {
-    try {
-      dummySlowHttpRequest(paymentDto);
-    }
-    catch (InterruptedException  e) {
-      LOG.error("Error getting slow response: ",e);
-    }
+    dummySlowHttpRequest(paymentDto);
 
     logTrace("makePayment: payment=%s", paymentDto);
     var payment = new Payment(paymentDto.toEntity());
@@ -88,7 +82,7 @@ public class PaymentsServiceImpl implements PaymentService {
     logTrace("cancelPayment: id=%s", id);
 
 
-    PaymentEntity paymentEntity = paymentRepository
+    var paymentEntity = paymentRepository
       .findById(id)
       .orElseThrow(() -> {
         logTrace("payment (id=%s) not found. ");
@@ -107,7 +101,7 @@ public class PaymentsServiceImpl implements PaymentService {
     }
   }
 
-  private void dummySlowHttpRequest(PaymentDto paymentDto) throws InterruptedException {
+  private void dummySlowHttpRequest(PaymentDto paymentDto){
     LOG.debug("getting country");
     BoundRequestBuilder getRequest = httpClient.prepareGet("http://localhost:8080/getCountrySlowly");
     getRequest.execute(new AsyncCompletionHandler<String>() {
