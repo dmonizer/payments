@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface PaymentRepository extends PagingAndSortingRepository<PaymentEntity, Long> {
 
-  List<PaymentEntity> findByDebtorIban(IBAN aLong);
+    List<PaymentEntity> findByDebtorIban(IBAN aLong);
 
-  List<PaymentEntity> findByCreditorIban(IBAN aLong);
+    List<PaymentEntity> findByCreditorIban(IBAN aLong);
 }

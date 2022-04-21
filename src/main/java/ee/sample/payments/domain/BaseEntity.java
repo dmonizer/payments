@@ -12,18 +12,18 @@ import javax.persistence.*;
 @Setter
 @Accessors(fluent = true)
 public class BaseEntity implements Persistable<Long> {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id")
-  Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    Long id;
 
-  @Override
-  public Long getId() {
-    return id;
-  }
+    @Override
+    public Long getId() {
+        return id;
+    }
 
-  @Override
-  public boolean isNew() {
-    return (id == null || id == 0);
-  }
+    @Override
+    public boolean isNew() {
+        return (id == null || id == 0);
+    }
 }

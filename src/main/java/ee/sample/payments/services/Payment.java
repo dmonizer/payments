@@ -15,29 +15,25 @@ import static ee.sample.payments.domain.PaymentCancellationFeeCoefficients.getCa
 
 
 public class Payment implements CancellablePayment {
-  @Getter
-  private final PaymentEntity paymentEntity;
+    @Getter
+    private final PaymentEntity paymentEntity;
 
-  public Payment(PaymentEntity payment) {
-    this.paymentEntity = payment;
-  }
-
-  @Override
-  public FeeEntity calculateCancellationFee() throws PaymentCancellationError {
-    if (!isCancellationPossible(this.getPaymentEntity().getCreatedDateTime())) {
-      throw new PaymentCancellationError("Payment can be cancelled only until midnight of the same day");
+    public Payment(PaymentEntity payment) {
+        this.paymentEntity = payment;
     }
 
-    return new FeeEntity()
-      .payment(this.getPaymentEntity())
-      .currency(DEFAULT_CURRENCY)
-      .amount(BigDecimal.valueOf(
-        getPaymentAgeInHours() * getCancellationFeeCoefficient(this.getPaymentEntity().type())));
+    @Override
+    public FeeEntity calculateCancellationFee() throws PaymentCancellationError {
+        if (!isCancellationPossible(this.getPaymentEntity().getCreatedDateTime())) {
+            throw new PaymentCancellationError("Payment can be cancelled only until midnight of the same day");
+        }
 
-  }
+        return new FeeEntity().payment(this.getPaymentEntity()).currency(DEFAULT_CURRENCY).amount(BigDecimal.valueOf(getPaymentAgeInHours() * getCancellationFeeCoefficient(this.getPaymentEntity().type())));
 
-  private long getPaymentAgeInHours() {
-    return Duration.between(this.getPaymentEntity().getCreatedDateTime(), LocalDateTime.now()).toHours();
-  }
+    }
+
+    private long getPaymentAgeInHours() {
+        return Duration.between(this.getPaymentEntity().getCreatedDateTime(), LocalDateTime.now()).toHours();
+    }
 
 }
