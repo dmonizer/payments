@@ -16,9 +16,6 @@ configurations {
 
 repositories {
     mavenCentral()
-    maven {
-        url 'https://repository.swedbank.net/artifactory/spacetime-vr'
-    }
 }
 
 dependencies {
