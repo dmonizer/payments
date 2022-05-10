@@ -20,11 +20,19 @@ public class PaymentValidator {
 
         switch (payment.type()) {
             case TYPE_1:
-                return ("EUR".equals(payment.currency().getCurrencyCode()) && StringUtils.hasText(payment.details()));
+                return ("EUR".equals(payment
+                        .currency()
+                        .getCurrencyCode()) && StringUtils.hasText(payment.details()));
             case TYPE_2:
-                return ("USD".equals(payment.currency().getCurrencyCode()));
+                return ("USD".equals(payment
+                        .currency()
+                        .getCurrencyCode()));
             case TYPE_3:
-                return (StringUtils.hasText(payment.bic()) && List.of("EUR", "USD").contains(payment.currency().getCurrencyCode()));
+                return (StringUtils.hasText(payment.bic()) && List
+                        .of("EUR", "USD")
+                        .contains(payment
+                                .currency()
+                                .getCurrencyCode()));
             default:
                 return false;
         }

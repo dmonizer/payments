@@ -18,31 +18,36 @@ import java.sql.SQLException;
 public class ErrorsHandler {
     private static final Logger LOG = LoggerFactory.getLogger(ErrorsHandler.class.getName());
 
-
     @ExceptionHandler({SQLException.class, IOException.class})
     public ResponseEntity<String> handleException(HttpServletRequest request, Exception ex) {
         logWarning("Exception occurred URL='%s', exception: %s", request.getRequestURL(), ex);
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal error");
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("Internal error");
     }
 
     @ExceptionHandler(value = {PaymentNotFoundException.class})
     public ResponseEntity<String> handleNotFoundException(HttpServletRequest request, Exception ex) {
         logWarning("Item not found (%s) - %s", request.getRequestURL(), ex.getMessage());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(ex.getMessage());
     }
 
     @ExceptionHandler(PaymentInvalidError.class)
     public ResponseEntity<String> handleInvalidRequestException(HttpServletRequest request, Exception ex) {
         logWarning("Bad data (%s) - %s", request.getRequestURL(), ex.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
-
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ex.getMessage());
     }
 
     @ExceptionHandler(PaymentCancellationError.class)
     public ResponseEntity<String> handleCancellationError(HttpServletRequest request, Exception ex) {
         logWarning("Cancellation error (%s) - %s", request.getRequestURL(), ex.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
-
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ex.getMessage());
     }
 
     private void logWarning(String stringFormat, Object... params) {

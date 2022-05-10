@@ -23,17 +23,28 @@ public class Payment implements CancellablePayment {
     }
 
     @Override
-    public FeeEntity calculateCancellationFee() throws PaymentCancellationError {
-        if (!isCancellationPossible(this.getPaymentEntity().getCreatedDateTime())) {
+    public FeeEntity calculateCancellationFee() {
+        if (!isCancellationPossible(this
+                .getPaymentEntity()
+                .getCreatedDateTime())) {
             throw new PaymentCancellationError("Payment can be cancelled only until midnight of the same day");
         }
 
-        return new FeeEntity().payment(this.getPaymentEntity()).currency(DEFAULT_CURRENCY).amount(BigDecimal.valueOf(getPaymentAgeInHours() * getCancellationFeeCoefficient(this.getPaymentEntity().type())));
+        return new FeeEntity()
+                .payment(this.getPaymentEntity())
+                .currency(DEFAULT_CURRENCY)
+                .amount(BigDecimal.valueOf(getPaymentAgeInHours() * getCancellationFeeCoefficient(this
+                        .getPaymentEntity()
+                        .type())));
 
     }
 
     private long getPaymentAgeInHours() {
-        return Duration.between(this.getPaymentEntity().getCreatedDateTime(), LocalDateTime.now()).toHours();
+        return Duration
+                .between(this
+                        .getPaymentEntity()
+                        .getCreatedDateTime(), LocalDateTime.now())
+                .toHours();
     }
 
 }

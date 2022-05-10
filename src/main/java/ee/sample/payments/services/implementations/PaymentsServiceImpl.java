@@ -6,7 +6,6 @@ import ee.sample.payments.domain.payments.PaymentDto;
 import ee.sample.payments.domain.payments.PaymentEntity;
 import ee.sample.payments.domain.payments.PaymentRepository;
 import ee.sample.payments.domain.validators.PaymentValidator;
-import ee.sample.payments.exceptions.PaymentCancellationError;
 import ee.sample.payments.exceptions.PaymentInvalidError;
 import ee.sample.payments.exceptions.PaymentNotFoundException;
 import ee.sample.payments.services.Payment;
@@ -35,7 +34,7 @@ public class PaymentsServiceImpl implements PaymentService {
     }
 
     @Override
-    public PaymentDto makePayment(PaymentDto paymentDto) throws PaymentInvalidError {
+    public PaymentDto makePayment(PaymentDto paymentDto) {
         dummySlowHttpRequest();
 
         logTrace("makePayment: payment=%s", paymentDto);
@@ -48,7 +47,7 @@ public class PaymentsServiceImpl implements PaymentService {
     }
 
     @Override
-    public List<PaymentDto> getPaymentsByDebtor(IBAN debtorIban) throws PaymentNotFoundException {
+    public List<PaymentDto> getPaymentsByDebtor(IBAN debtorIban) {
 
         logTrace("getPaymentsByDeptor: debtorIban=%s", debtorIban);
 
@@ -58,11 +57,13 @@ public class PaymentsServiceImpl implements PaymentService {
         }
 
         return paymentEntities
-                .stream().map(PaymentDto::new).collect(Collectors.toList());
+                .stream()
+                .map(PaymentDto::new)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<PaymentDto> getPaymentsByCreditor(IBAN creditorIban) throws PaymentNotFoundException {
+    public List<PaymentDto> getPaymentsByCreditor(IBAN creditorIban) {
         logTrace("getPaymentsByCreditor: creditorIban=%s", creditorIban);
 
         List<PaymentEntity> paymentEntities = paymentRepository.findByCreditorIban(creditorIban);
@@ -76,8 +77,9 @@ public class PaymentsServiceImpl implements PaymentService {
     }
 
     @Override
-    public PaymentDto getPaymentById(Long id) throws PaymentNotFoundException {
-        PaymentEntity payment = paymentRepository.findById(id)
+    public PaymentDto getPaymentById(Long id) {
+        PaymentEntity payment = paymentRepository
+                .findById(id)
                 .orElseThrow(() -> new PaymentNotFoundException("Payment not found"));
         return new PaymentDto(payment);
     }
@@ -85,9 +87,8 @@ public class PaymentsServiceImpl implements PaymentService {
     @Transactional
     // to make sure that all operations (are successful, or all are rolled back if one fails (either payment cacellation or fee creation
     @Override
-    public FeeDto cancelPayment(Long id) throws PaymentNotFoundException, PaymentCancellationError {
+    public FeeDto cancelPayment(Long id) {
         logTrace("cancelPayment: id=%s", id);
-
 
         var paymentEntity = paymentRepository
                 .findById(id)
@@ -120,5 +121,4 @@ public class PaymentsServiceImpl implements PaymentService {
         });
 
     }
-
 }

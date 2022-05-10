@@ -1,0 +1,9 @@
+{
+  "type": "TYPE_2",
+  "amount": 50,
+  "debtorIban": "EE3434242343",
+  "creditorIban": "EE131231231231",
+  "currency": "USD",
+  "details": "payment details",
+  "cancelled": false
+}

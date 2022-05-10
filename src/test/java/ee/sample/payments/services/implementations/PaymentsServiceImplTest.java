@@ -5,6 +5,8 @@ import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 
@@ -16,9 +18,11 @@ import static org.hamcrest.Matchers.notNullValue;
 @Tag(TestCategories.INTEGRATION_TEST)
 class PaymentsServiceImplTest {
 
-    private static final String PAYMENT_JSON = "{\n" + "    \"type\": \"TYPE_2\",\n" + "    \"amount\": 50,\n" + "    \"debtorIban\": \"EE3434242343\",\n" + "    \"creditorIban\": \"EE131231231231\",\n" + "    \"currency\": \"USD\",\n" + "    \"details\": \"payment details\",\n" + "    \"cancelled\": false\n" + "}";
     @LocalServerPort
     int port;
+    @Autowired
+    @Qualifier("paymentJson")
+    private String PAYMENT_JSON;
 
     @BeforeEach
     public void setUp() {
@@ -35,14 +39,13 @@ class PaymentsServiceImplTest {
                 .assertThat()
                 .statusCode(200)
                 .body("id", notNullValue());
-
     }
 
     @Test
     void bydebtor() {
         with()
                 .contentType("application/json")
-                .get("/bydebtor/{iban}", "EE14121231") // checking for payment created in data.sql
+                .get("/bydebtor/{iban}", "EE14121231") // checking for existing payment in DB
                 .then()
                 .statusCode(200);
     }
@@ -51,7 +54,7 @@ class PaymentsServiceImplTest {
     void bycreditor() {
         with()
                 .contentType("application/json")
-                .get("/bycreditor/{iban}", "LV3434234234") // checking for payment created in data.sql
+                .get("/bycreditor/{iban}", "LV3434234234") //  checking for existing payment in DB
                 .then()
                 .statusCode(200);
     }
@@ -78,8 +81,6 @@ class PaymentsServiceImplTest {
                 .then()
                 .statusCode(200)
                 .body("cancelled", equalTo(true));
-
-
     }
     // TODO: fee check
 

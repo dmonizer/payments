@@ -3,9 +3,6 @@ package ee.sample.payments.controllers;
 import ee.sample.payments.domain.IBAN;
 import ee.sample.payments.domain.fees.FeeDto;
 import ee.sample.payments.domain.payments.PaymentDto;
-import ee.sample.payments.exceptions.PaymentCancellationError;
-import ee.sample.payments.exceptions.PaymentInvalidError;
-import ee.sample.payments.exceptions.PaymentNotFoundException;
 import ee.sample.payments.services.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -30,27 +27,27 @@ public class PaymentController {
     }
 
     @PostMapping(path = "/create", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public PaymentDto createPayment(@RequestBody PaymentDto payment) throws PaymentInvalidError {
+    public PaymentDto createPayment(@RequestBody PaymentDto payment) {
         return service.makePayment(payment);
     }
 
     @PostMapping(path = "/cancel/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public FeeDto cancelPayment(@PathVariable Long id) throws PaymentCancellationError, PaymentNotFoundException {
+    public FeeDto cancelPayment(@PathVariable Long id) {
         return service.cancelPayment(id);
     }
 
     @GetMapping(path = "/bydebtor/{iban}")
-    public List<PaymentDto> getPaymentsByDebtor(@PathVariable(name = "iban") IBAN debtorIban) throws PaymentNotFoundException {
+    public List<PaymentDto> getPaymentsByDebtor(@PathVariable(name = "iban") IBAN debtorIban) {
         return service.getPaymentsByDebtor(debtorIban);
     }
 
     @GetMapping(path = "/bycreditor/{iban}")
-    public List<PaymentDto> getPaymentsByCreditor(@PathVariable(name = "iban") IBAN creditorIban) throws PaymentNotFoundException {
+    public List<PaymentDto> getPaymentsByCreditor(@PathVariable(name = "iban") IBAN creditorIban) {
         return service.getPaymentsByCreditor(creditorIban);
     }
 
     @GetMapping(path = "/byid/{id}")
-    public PaymentDto getPaymentById(@PathVariable(name = "id") Long id) throws PaymentNotFoundException {
+    public PaymentDto getPaymentById(@PathVariable(name = "id") Long id) {
         return service.getPaymentById(id);
     }
 
@@ -58,7 +55,9 @@ public class PaymentController {
     public String mockCountry() throws ExecutionException, InterruptedException {
         ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
-        return executorService.schedule(this::getCountry, 5, TimeUnit.SECONDS).get(); // return response in 5 seconds to emulate slow external API
+        return executorService
+                .schedule(this::getCountry, 5, TimeUnit.SECONDS)
+                .get(); // return response in 5 seconds to emulate slow external API
     }
 
     private String getCountry() {

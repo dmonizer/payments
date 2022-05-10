@@ -2,11 +2,13 @@ package ee.sample.payments.domain.payments;
 
 import ee.sample.payments.domain.IBAN;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.Currency;
 
 @Data
+@NoArgsConstructor // needed for Jackson
 public class PaymentDto { // IRL would use MapStruct
     private Long id;
     private PaymentType type;
@@ -18,16 +20,16 @@ public class PaymentDto { // IRL would use MapStruct
     private String bic;
     private boolean cancelled;
 
-    public PaymentDto() {
-
-    }
-
     public PaymentDto(PaymentEntity paymentEntity) {
         this.id = paymentEntity.id();
         this.type = paymentEntity.type();
         this.amount = paymentEntity.amount();
-        this.debtorIban = paymentEntity.debtorIban().getIban();
-        this.creditorIban = paymentEntity.creditorIban().getIban();
+        this.debtorIban = paymentEntity
+                .debtorIban()
+                .getIban();
+        this.creditorIban = paymentEntity
+                .creditorIban()
+                .getIban();
         this.currency = paymentEntity.currency();
         this.details = paymentEntity.details();
         this.bic = paymentEntity.bic();
@@ -36,7 +38,15 @@ public class PaymentDto { // IRL would use MapStruct
     }
 
     public PaymentEntity toEntity() {
-        PaymentEntity entity = new PaymentEntity().amount(amount).currency(currency).type(type).debtorIban(new IBAN(debtorIban)).creditorIban(new IBAN(creditorIban)).details(details).bic(bic).cancelled(this.cancelled);
+        PaymentEntity entity = new PaymentEntity()
+                .amount(amount)
+                .currency(currency)
+                .type(type)
+                .debtorIban(new IBAN(debtorIban))
+                .creditorIban(new IBAN(creditorIban))
+                .details(details)
+                .bic(bic)
+                .cancelled(this.cancelled);
 
         entity.id(id);
         return entity;

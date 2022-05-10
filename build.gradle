@@ -46,3 +46,9 @@ task integrationTests(type: Test) {
         excludeTags 'UnitTest'
     }
 }
+
+task allTests(type: Test) {
+    useJUnitPlatform {
+        includeTags 'IntegrationTest | UnitTest'
+    }
+}

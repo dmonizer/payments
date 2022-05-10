@@ -1,10 +1,6 @@
 package ee.sample.payments.exceptions;
 
-public class PaymentNotFoundException extends Exception {
-    public PaymentNotFoundException() {
-        super();
-    }
-
+public class PaymentNotFoundException extends RuntimeException {
     public PaymentNotFoundException(String message) {
         super(message);
     }
