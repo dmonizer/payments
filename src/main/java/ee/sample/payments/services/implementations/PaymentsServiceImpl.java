@@ -36,7 +36,7 @@ public class PaymentsServiceImpl implements PaymentService {
 
     @Override
     public PaymentDto makePayment(PaymentDto paymentDto) throws PaymentInvalidError {
-        dummySlowHttpRequest(paymentDto);
+        dummySlowHttpRequest();
 
         logTrace("makePayment: payment=%s", paymentDto);
         var payment = new Payment(paymentDto.toEntity());
@@ -108,7 +108,7 @@ public class PaymentsServiceImpl implements PaymentService {
         }
     }
 
-    private void dummySlowHttpRequest(PaymentDto paymentDto) {
+    private void dummySlowHttpRequest() {
         LOG.debug("getting country");
         BoundRequestBuilder getRequest = httpClient.prepareGet("http://localhost:8080/getCountrySlowly");
         getRequest.execute(new AsyncCompletionHandler<String>() {

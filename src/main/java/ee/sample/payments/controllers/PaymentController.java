@@ -18,7 +18,10 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 @RestController
-public class PaymentController { // IRL I would document endpoints and parameters with swagger accessible only when running on dev profile.
+public class PaymentController {
+    // IRL I would document endpoints and parameters with swagger accessible only when running on dev profile.
+
+    private static final String ESTONIA = "EE";
     private final PaymentService service;
 
     @Autowired
@@ -59,7 +62,7 @@ public class PaymentController { // IRL I would document endpoints and parameter
     }
 
     private String getCountry() {
-        return "EE";
+        return ESTONIA;
     }
 
 }
