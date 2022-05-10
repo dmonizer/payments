@@ -1,15 +1,27 @@
 package ee.sample.payments.services.implementations;
 
+import io.restassured.RestAssured;
+import org.aspectj.lang.annotation.Before;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
 
 import static io.restassured.RestAssured.with;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class PaymentsServiceImplTest {
-    // TODO: these are end-to-end tests, which run on running instance and
-    // they do not ensure cleanup after themselves.
-    // Currently its not an issue, as its running on in-memory DB
+
+    @LocalServerPort
+    int port;
+
+    @BeforeEach
+    public void setUp() {
+        RestAssured.port = port;
+    }
 
     private static final String PAYMENT_JSON = "{\n" + "    \"type\": \"TYPE_2\",\n" + "    \"amount\": 50,\n" + "    \"debtorIban\": \"EE3434242343\",\n" + "    \"creditorIban\": \"EE131231231231\",\n" + "    \"currency\": \"USD\",\n" + "    \"details\": \"payment details\",\n" + "    \"cancelled\": false\n" + "}";
 

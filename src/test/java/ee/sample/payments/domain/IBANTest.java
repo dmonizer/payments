@@ -1,16 +1,24 @@
 package ee.sample.payments.domain;
 
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ArgumentsSource;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class IBANTest {
 
-    @Test
-    void ibanValidation() {
-        assertThrows(IllegalArgumentException.class, () -> new IBAN("UG34394923843883223810"));
-        assertDoesNotThrow(() -> new IBAN("EE34394923843883223810"));
-        assertDoesNotThrow(() -> new IBAN("lv3435423423420"));
+    @ParameterizedTest
+    @ArgumentsSource(ValidIBANProvider.class)
+    void ibanValidation_valids(String iban) {
+        assertDoesNotThrow(() -> new IBAN(iban));
     }
+
+    @ParameterizedTest
+    @ArgumentsSource(InvalidIBANProvider.class)
+    void ibanValidation_invalids(String iban) {
+        assertThrows(IllegalArgumentException.class, () -> new IBAN(iban));
+    }
+
+
 }

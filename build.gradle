@@ -16,6 +16,9 @@ configurations {
 
 repositories {
     mavenCentral()
+    maven {
+        url 'https://repository.swedbank.net/artifactory/spacetime-vr'
+    }
 }
 
 dependencies {
@@ -27,6 +30,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.asynchttpclient:async-http-client:2.12.3'
+    implementation 'org.flywaydb:flyway-core:8.5.10'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.rest-assured:rest-assured:4.4.0'
