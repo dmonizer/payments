@@ -1,9 +1,9 @@
 package ee.sample.payments.services.implementations;
 
+import ee.sample.payments.TestCategories;
 import io.restassured.RestAssured;
-import org.aspectj.lang.annotation.Before;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
@@ -13,6 +13,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Tag(TestCategories.INTEGRATION_TEST)
 class PaymentsServiceImplTest {
 
     @LocalServerPort
